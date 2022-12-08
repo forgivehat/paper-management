@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+
+<mapper namespace="com.paper.mapper.CollegeMapper">
+
+    <insert id="insertCollege" parameterType="College" useGeneratedKeys="true"
+            keyProperty="id">
+        insert into t_college(name,note) values (#{name},#{note})
+    </insert>
+
+    <delete id="deleteCollege" parameterType="College">
+        delete from t_college where id = #{id}
+    </delete>
+
+    <update id="updateCollege" parameterType="College">
+        update  t_college set name = #{name},note = #{note} where id = #{id}
+    </update>
+
+    <update id="updateNotNull" parameterType="College">
+        update  t_college
+        <set>
+            <if test="name != null">name = #{name},</if>
+            <if test="note != null">note = #{note},</if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <resultMap id="CollegeMap" type="College">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="note" column="note"/>
+    </resultMap>
+
+    <select id="selectById" resultMap="CollegeMap">
+        SELECT * FROM t_college where id = #{id}
+    </select>
+
+    <select id="selectWhere" resultMap="CollegeMap">
+        SELECT * FROM t_college
+        <where>
+            <if test="name != null"> name like #{name} </if>
+        </where>
+        order by id desc
+    </select>
+
+    <select id="selectAll" resultMap="CollegeMap">
+        SELECT * FROM t_college order by id desc
+    </select>
+</mapper>

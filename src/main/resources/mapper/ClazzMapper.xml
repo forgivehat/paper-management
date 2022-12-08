@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+
+<mapper namespace="com.paper.mapper.ClazzMapper">
+
+    <insert id="insertClazz" parameterType="Clazz" useGeneratedKeys="true"
+            keyProperty="id">
+        insert into t_clazz(name,major_id,major_name,dep_id,dep_name,college_id,college_name)
+        values (#{name},#{major_id},#{major_name},#{dep_id},#{dep_name},#{college_id},#{college_name})
+    </insert>
+
+    <delete id="deleteClazz">
+        delete from t_clazz where id = #{id}
+    </delete>
+
+    <update id="updateClazz" parameterType="Clazz">
+        update  t_clazz set
+                name = #{name},
+                major_id = #{major_id},
+                major_name = #{major_name},
+                dep_id = #{dep_id},
+                dep_name = #{dep_name},
+                college_id = #{college_id},
+                college_name = #{college_name}
+        where id = #{id}
+    </update>
+
+    <update id="updateNotNull" parameterType="Clazz">
+        update  t_clazz
+        <set>
+            <if test="name != null">name = #{name},</if>
+            <if test="major_id != null">major_id = #{major_id},</if>
+            <if test="major_name != null">major_name = #{major_name},</if>
+            <if test="dep_id != null">dep_id = #{dep_id},</if>
+            <if test="dep_name != null">dep_name = #{dep_name}</if>
+            <if test="college_id != null">college_id = #{college_id},</if>
+            <if test="college_name != null">college_name = #{college_name}</if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <resultMap id="ClazzMap" type="Clazz">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="major_name" column="major_name"/>
+        <result property="dep_name" column="dep_name"/>
+        <result property="college_name" column="college_name"/>
+    </resultMap>
+
+    <select id="selectClazzById" resultMap="ClazzMap">
+        SELECT * FROM t_clazz where id = #{id}
+    </select>
+
+    <select id="selectWhere" resultMap="ClazzMap">
+        SELECT * FROM t_clazz
+        <where>
+            <if test="name != null"> name like #{name} </if>
+            <if test="major_id != null"> and major_id = #{major_id} </if>
+            <if test="major_name != null"> and major_name like #{major_name} </if>
+            <if test="dep_id != null"> and dep_id = #{dep_id} </if>
+            <if test="dep_name != null"> and dep_name like #{dep_name} </if>
+            <if test="college_id != null"> and college_id = #{college_id} </if>
+            <if test="college_name != null"> and college_name like #{college_name} </if>
+        </where>
+        order by id desc
+    </select>
+
+    <select id="selectAll" resultMap="ClazzMap">
+        SELECT * FROM t_clazz order by id desc
+    </select>
+</mapper>

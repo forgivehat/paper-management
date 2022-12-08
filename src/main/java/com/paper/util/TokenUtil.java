@@ -2,6 +2,7 @@ package com.paper.util;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.paper.entity.Account;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -54,4 +55,5 @@ public class TokenUtil {
     public static String getRoleFromToken(HttpServletRequest request){
         return getTokenParams(request).get("role");
     }
+
 }

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+
+<mapper namespace="com.paper.mapper.TeacherMapper">
+
+    <insert id="insertTeacher" parameterType="Teacher" useGeneratedKeys="true"
+            keyProperty="id">
+        insert into t_teacher(no,name,title,email,address,clazz_id,clazz_name,acc_id)
+        values (#{no},#{name},#{title},#{email},#{address},#{clazz_id},#{clazz_name},#{acc_id})
+    </insert>
+
+    <delete id="deleteTeacher" parameterType="Teacher">
+        delete from t_teacher where id = #{id}
+    </delete>
+
+    <update id="updateTeacher" parameterType="Teacher">
+        update  t_teacher set
+                              no  = #{no},
+                              name = #{name},
+                              title = #{title},
+                              email = #{email},
+                              address = #{address},
+                              clazz_id = #{clazz_id},
+                              clazz_name = #{clazz_name},
+                              acc_id = #{acc_id}
+        where id = #{id}
+    </update>
+
+    <update id="updateNotNull" parameterType="Teacher">
+        update  t_teacher
+        <set>
+            <if test="no != null">no = #{no},</if>
+            <if test="name != direction">name = #{name},</if>
+            <if test="title != null">title = #{title},</if>
+            <if test="email != null">email = #{email},</if>
+            <if test="address != null">address like #{address},</if>
+            <if test="clazz_id != null">clazz_id = #{clazz_id},</if>
+            <if test="clazz_name != null">clazz_name like #{clazz_name}</if>
+            <if test="acc_id != null">acc_id = #{acc_id}</if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <resultMap id="TeacherMap" type="Teacher">
+        <result property="id" column="id"/>
+        <result property="no" column="no"/>
+        <result property="name" column="name"/>
+        <result property="title" column="title"/>
+        <result property="email" column="email"/>
+        <result property="address" column="address"/>
+        <result property="clazz_id" column="clazz_id"/>
+        <result property="clazz_name" column="clazz_name"/>
+        <result property="acc_id" column="acc_id"/>
+    </resultMap>
+
+    <select id="selectById" resultMap="TeacherMap">
+        SELECT * FROM t_teacher where id = #{id}
+    </select>
+    <select id="selectWhere" resultMap="TeacherMap">
+        SELECT * FROM t_teacher
+        <where>
+            <if test="no != null">no = #{no}</if>
+            <if test="name != null">name like #{no}</if>
+            <if test="title != null">title = #{title}</if>
+            <if test="clazz_id != null">clazz_id = #{clazz_id}</if>
+            <if test="clazz_name != null">clazz_name like #{clazz_name}</if>
+        </where>
+    </select>
+    <select id="selectAll" resultMap="TeacherMap">
+        SELECT * FROM t_teacher order by id desc
+    </select>
+</mapper>

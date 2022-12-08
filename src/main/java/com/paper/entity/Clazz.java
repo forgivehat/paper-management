@@ -5,28 +5,21 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * 学生信息实体类
+ * 班级信息实体类
+ * clazz --> major --> department --> college
+ *   ^
  */
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Student {
+public class Clazz {
     Integer id;
-
-    String no;
 
     String name;
 
-    String gender;
+    String major_id;
 
-    String email;
-
-    String telephone;
-
-    Integer clazz_id;
-
-    String clazz_name;
+    String major_name;
 
     Integer dep_id;
 
@@ -35,9 +28,4 @@ public class Student {
     Integer college_id;
 
     String college_name;
-
-    Integer acc_id;  // 账号id
-
-    Integer final_thesis_id;
-
 }

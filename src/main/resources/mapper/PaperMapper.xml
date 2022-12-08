@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+
+<mapper namespace="com.paper.mapper.PaperMapper">
+    <insert id="insertPaper" parameterType="Paper" useGeneratedKeys="true"
+            keyProperty="id">
+        insert into t_paper(thesis_id,author_id,author_name,url,version)
+        values (#{thesis_id},#{author_id},#{author_name},#{url},#{version})
+    </insert>
+
+
+    <delete id="deletePaper" parameterType="Paper">
+        delete from t_paper where id = #{id}
+    </delete>
+
+    <update id="updatePaper" parameterType="Paper">
+        update  t_paper set
+                            thesis_id = #{thesis_id},
+                            author_id = #{author_id},
+                            author_name = #{author_name},
+                            url = #{url},
+                            version = #{version}
+        where id = #{id}
+    </update>
+
+    <update id="updateNotNull" parameterType="Paper">
+        update  t_paper
+        <set >
+            <if test="thesis_id != null">thesis_id = #{thesis_id},</if>
+            <if test="author_id != null">author_id = #{author_id},</if>
+            <if test="author_name != null">author_name = #{author_name},</if>
+            <if test="url != null">url = #{url},</if>
+            <if test="version != null">version = #{version},</if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <resultMap id="PaperMap" type="Paper">
+        <result property="id" column="id"/>
+        <result property="thesis_id" column="thesis_id"/>
+        <result property="author_id" column="author_id"/>
+        <result property="author_name" column="author_name"/>
+        <result property="url" column="url"/>
+        <result property="version" column="version"/>
+    </resultMap>
+
+    <select id="selectById" resultMap="PaperMap">
+        SELECT * FROM t_paper where id = #{id}
+    </select>
+
+    <select id="selectWhere" resultMap="PaperMap">
+        SELECT * FROM t_paper
+        <where>
+            <if test="thesis_id != null"> thesis_id = #{thesis_id} </if>
+            <if test="author_name != null"> and author_name like #{author_id} </if>
+            <if test="version != null"> and version = #{version} </if>
+        </where>
+                 order by id desc
+    </select>
+
+    <select id="selectAll" resultMap="PaperMap">
+        SELECT * FROM t_paper order by id desc
+    </select>
+
+</mapper>

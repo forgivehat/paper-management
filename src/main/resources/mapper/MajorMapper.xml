@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+
+<mapper namespace="com.paper.mapper.MajorMapper">
+
+    <insert id="insertMajor" parameterType="Major" useGeneratedKeys="true"
+            keyProperty="id">
+        insert into t_major(name,dep_id,dep_name,college_id,college_name)
+        values (#{name},#{dep_id},#{dep_name},#{college_id},#{college_name})
+    </insert>
+
+    <delete id="deleteMajor" parameterType="Major">
+        delete from t_major where id = #{id}
+    </delete>
+
+    <update id="updateMajor" parameterType="Major">
+        update  t_major set
+                            name = #{name},
+                            dep_id = #{dep_id},
+                            dep_name = #{dep_name},
+                            college_id = #{college_id},
+                            college_name = #{college_name}
+        where id = #{id}
+    </update>
+
+    <update id="updateNotNull" parameterType="Major">
+        update  t_major
+        <set >
+            <if test="name != null">
+                name = #{name},
+            </if>
+            <if test="dep_id != direction">
+                dep_id = #{dep_id},
+            </if>
+            <if test="dep_name != null">
+                dep_name = #{dep_name},
+            </if>
+            <if test="college_id != null">
+                college_id = #{college_id},
+            </if>
+            <if test="college_name != null">
+                college_name = #{college_name},
+            </if>
+            where id = #{id}
+        </set>
+    </update>
+
+    <resultMap id="MajorMap" type="Major">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="dep_id" column="dep_id"/>
+        <result property="dep_name" column="dep_name"/>
+        <result property="college_id" column="college_id"/>
+        <result property="college_name" column="college_name"/>
+    </resultMap>
+
+    <select id="selectById" resultMap="MajorMap">
+        SELECT * FROM t_major where id = #{id}
+    </select>
+
+    <select id="selectWhere" resultMap="MajorMap">
+        SELECT * FROM t_major
+        <where>
+            <if test="name != null">name like #{name}</if>
+            <if test="dep_name != null">and dep_name like #{dep_name}</if>
+            <if test="college_name != null">and college_name like #{college_name}</if>
+        </where>
+        order by id desc
+    </select>
+
+    <select id="selectAll" resultMap="MajorMap">
+        SELECT * FROM t_major order by id desc
+    </select>
+</mapper>

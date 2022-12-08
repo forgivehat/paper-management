@@ -7,7 +7,7 @@ import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.paper.entity.Account;
-import com.paper.service.impl.AccountService;
+import com.paper.service.impl.AccountServiceImpl;
 import com.paper.util.VerifyToken;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,7 +21,7 @@ import java.lang.reflect.Method;
 
     public class AuthInterceptor implements HandlerInterceptor {
        @Autowired
-       AccountService accountService;
+       AccountServiceImpl accountServiceImpl;
         public static final Logger logger = LoggerFactory.getLogger(AuthInterceptor.class);
 
         @Override
@@ -52,7 +52,7 @@ import java.lang.reflect.Method;
                         throw new RuntimeException("解析token失败！");
                     }
 
-                    Account account = accountService.findByUsername(acc_username);
+                    Account account = accountServiceImpl.findByUsername(acc_username);
                     if (account == null){
                         throw new RuntimeException("用户不存在，请重新登录！");
                     }

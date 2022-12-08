@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+
+<mapper namespace="com.paper.mapper.ThesisMapper">
+
+    <insert id="insertThesis" parameterType="Thesis" useGeneratedKeys="true"
+            keyProperty="id">
+        insert into t_thesis(title,direction,description,teacher_id,teacher_name,state)
+        values (#{title},#{direction},#{description},#{teacher_id},#{teacher_name},#{state})
+    </insert>
+
+    <delete id="deleteThesis">
+        delete from t_thesis where id = #{id}
+    </delete>
+
+    <update id="updateThesis" parameterType="Thesis">
+        update  t_thesis set
+                              title = #{title},
+                              direction = #{direction},
+                              description = #{description},
+                              teacher_id = #{teacher_id},
+                              teacher_name = #{teacher_name},
+                              state = #{state}
+        where id = #{id}
+    </update>
+
+    <update id="updateNotNull" parameterType="Thesis">
+        update  t_thesis
+        <set>
+        <if test="title != null">title = #{title},</if>
+        <if test="direction != direction">direction = #{direction},</if>
+        <if test="description != null">description = #{description}, </if>
+        <if test="teacher_id != null">teacher_id = #{teacher_id},</if>
+        <if test="teacher_name != null">teacher_name = #{teacher_name},</if>
+        <if test="state != null">state = #{state}</if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <resultMap id="ThesisMap" type="Thesis">
+        <result property="id" column="id"/>
+        <result property="title" column="title"/>
+        <result property="direction" column="direction"/>
+        <result property="description" column="description"/>
+        <result property="teacher_name" column="teacher_name"/>
+        <result property="state" column="state"/>
+        <result property="dep_name" column="dep_name"/>
+        <result property="college_name" column="college_name"/>
+    </resultMap>
+
+    <select id="selectById" resultMap="ThesisMap">
+        SELECT * FROM t_thesis where id = #{id}
+    </select>
+
+    <select id="selectWhere" resultMap="ThesisMap">
+        SELECT * FROM t_thesis
+        <where>
+            <if test="title != null">title like #{title}</if>
+            <if test="direction != null">and direction = #{direction}</if>
+            <if test="teacher_id != null">and teacher_id = #{teacher_id}</if>
+            <if test="teacher_name != null">and teacher_name like #{teacher_name}</if>
+            <if test="state != null">and state = #{state}</if>
+            <if test="dep_id != null">and dep_id = #{dep_id}</if>
+            <if test="college_id != null"> and college_id = #{college_id}</if>
+        </where>
+            order by id desc
+    </select>
+
+    <select id="selectAll" resultMap="ThesisMap">
+        SELECT * FROM t_thesis order by id desc
+    </select>
+
+    <select id="selectCount" resultType="Int">
+        SELECT count(*) from t_thesis
+        <where>
+            <if test="teacher_id != null"> teacher_id = #{teacher_id}</if>
+            <if test="dep_id != null">and dep_id = #{dep_id}</if>
+            <if test="state != null"> and state = #{state}</if>
+        </where>
+
+    </select>
+</mapper>

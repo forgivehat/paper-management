@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+
+<mapper namespace="com.paper.mapper.AdminMapper">
+
+    <insert id="insertAdmin" parameterType="Admin" useGeneratedKeys="true"
+            keyProperty="id">
+        insert into t_admin(no,name,level,acc_id)
+        values (#{no},#{level},#{acc_id})
+    </insert>
+
+    <delete id="deleteCollege" parameterType="Admin">
+        delete from t_admin where id = #{id}
+    </delete>
+
+    <update id="updateAdmin" parameterType="Admin">
+        update  t_admin set
+            no = #{no},
+            name = #{name},
+            level = #{level},
+            acc_id = #{acc_id}
+        where id = #{id}
+    </update>
+
+    <update id="updateNotNull" parameterType="College">
+        update  t_admin
+        <set>
+            <if test="no != null">no = #{no},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="level != null">level = #{level},</if>
+            <if test="acc_id != null">acc_id = #{acc_id},</if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <resultMap id="AdminMap" type="Admin">
+        <result property="id" column="acc_id"/>
+        <result property="no" column="no"/>
+        <result property="name" column="name"/>
+        <result property="level" column="level"/>
+    </resultMap>
+
+    <select id="selectById" resultMap="AdminMap">
+        SELECT * FROM t_admin where id = #{id}
+    </select>
+
+    <select id="selectWhere" resultMap="AdminMap">
+        SELECT * FROM t_admin
+        <where>
+            <if test="no != null">no = #{no}</if>
+            <if test="name != null">and name like #{name}</if>
+            <if test="level != null">and level = #{college_name}</if>
+        </where>
+        order by id desc
+    </select>
+
+    <select id="selectAll" resultMap="DepartmentMap">
+        SELECT * FROM t_department order by id desc
+    </select>
+</mapper>

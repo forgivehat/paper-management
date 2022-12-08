@@ -13,6 +13,10 @@ public class Result<T> {
     private String message;
     private T t;
 
+    public Result() {
+
+    }
+
     public Result(String code, String message, T t) {
         this.code = code;
         this.message = message;
@@ -24,6 +28,4 @@ public class Result<T> {
         this.message = message;
     }
 
-    public Result() {
-    }
 }

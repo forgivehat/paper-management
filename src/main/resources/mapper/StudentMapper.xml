@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+
+<mapper namespace="com.paper.mapper.StudentMapper">
+    <insert id="insertStudent" parameterType="Student" useGeneratedKeys="true"
+            keyProperty="id">
+        insert into t_student(no,name,gender,email,lowest_org_id,lowest_org_name)
+        values (#{no},#{name},#{gender},#{email},#{lowest_org_id},#{lowest_org_name})
+    </insert>
+
+    <delete id="deleteStudent" parameterType="Student">
+        delete from t_student where id = #{id}
+    </delete>
+
+    <update id="updateStudent" parameterType="Student">
+        update  t_student set
+                              no = #{no},
+                              name = #{name},
+                              gender = #{gender},
+                              email = #{email},
+                              clazz_id = #{clazz_id},
+                              clazz_name = #{clazz_name}
+        where id = #{id}
+    </update>
+
+    <update id="updateNotNull" parameterType="Student">
+        update  t_student
+        <set >
+            <if test="no != null">no = #{no},</if>
+            <if test="name != direction">name = #{name},</if>
+            <if test="gender != null">gender = #{gender},</if>
+            <if test="email != null">email = #{email},</if>
+            <if test="clazz_id != null">clazz_id = #{clazz_id},</if>
+            <if test="clazz_name != null">clazz_name = #{clazz_name},</if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <resultMap id="StudentMap" type="Student">
+        <result property="id" column="id"/>
+        <result property="no" column="no"/>
+        <result property="name" column="name"/>
+        <result property="gender" column="gender"/>
+        <result property="email" column="email"/>
+
+        <result property="acc_id" column="acc_id"/>
+    </resultMap>
+
+    <select id="selectById" resultMap="StudentMap">
+        SELECT * FROM t_student where id = #{id}
+    </select>
+
+    <select id="selectWhere" resultMap="StudentMap">
+        SELECT * FROM t_student
+        <where>
+            <if test="no != null">no = #{no}</if>
+            <if test="name != null">and name like #{name}</if>
+            <if test="gender != null">and gender = #{gender}</if>
+
+        </where>
+        order by id desc
+    </select>
+
+    <select id=" selectByAccId" resultMap="StudentMap">
+        SELECT * FROM t_student where acc_id = #{acc_id} order by id desc
+    </select>
+
+
+
+    <select id="selectAll" resultMap="StudentMap">
+        SELECT * FROM t_student order by id desc
+    </select>
+</mapper>

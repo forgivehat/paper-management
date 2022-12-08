@@ -13,6 +13,6 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public Object handlerException(Exception e){
         e.printStackTrace();
-        return new Result("30001",e.getMessage()!=null?e.getMessage():"服务器发送错误！");
+        return new Result("1002",e.getMessage()!=null?e.getMessage():"服务器发送错误！");
     }
 }

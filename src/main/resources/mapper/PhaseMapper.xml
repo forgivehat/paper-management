@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+
+<mapper namespace="com.paper.mapper.PhaseMapper">
+
+    <insert id="insertPhase" parameterType="Phase" useGeneratedKeys="true"
+            keyProperty="id">
+        insert into t_Phase(content,start_time,end_time,dep_id,dep_name,college_id,college_name)
+        values (#{content},#{start_time},#{end_time},#{dep_id},#{dep_name},#{college_id},#{college_name})
+    </insert>
+
+    <delete id="deletePhase" parameterType="Phase">
+        delete from t_Phase where id = #{id}
+    </delete>
+
+    <update id="updatePhase" parameterType="Phase">
+        update  t_Phase set
+                            content = #{content},
+                            start_time = #{start_time},
+                            end_time = #{end_time},
+                            dep_id = #{dep_id},
+                            dep_name = #{dep_name},
+                            college_id = #{college_id},
+                            college_name = #{college_name}
+        where id = #{id}
+    </update>
+
+    <update id="updateNotNull" parameterType="Phase">
+        update  t_Phase
+        <set >
+            <if test="content != null">
+                content = #{content},
+            </if>
+            <if test="start_time != null">
+                start_time = #{start_time},
+            </if>
+            <if test="end_time != null">
+                end_time = #{end_time},
+            </if>
+            <if test="dep_id != direction">
+                dep_id = #{dep_id},
+            </if>
+            <if test="dep_name != null">
+                dep_name = #{dep_name},
+            </if>
+            <if test="college_id != null">
+                college_id = #{college_id},
+            </if>
+            <if test="college_name != null">
+                college_name = #{college_name},
+            </if>
+            where id = #{id}
+        </set>
+    </update>
+
+    <resultMap id="PhaseMap" type="Phase">
+        <result property="id" column="id"/>
+        <result property="content" column="content"/>
+        <result property="start_time" column=""/>
+        <result property="end_time" column="end_time"/>
+        <result property="dep_id" column="dep_id"/>
+        <result property="dep_name" column="dep_name"/>
+        <result property="college_id" column="college_id"/>
+        <result property="college_name" column="college_name"/>
+    </resultMap>
+
+    <select id="selectById" resultMap="PhaseMap">
+        SELECT * FROM t_Phase where id = #{id}
+    </select>
+
+    <select id="selectWhere" resultMap="PhaseMap">
+        SELECT * FROM t_Phase
+        <where>
+            <if test="dep_name != null">and dep_name like #{dep_name}</if>
+            <if test="college_name != null">and college_name like #{college_name}</if>
+        </where>
+        order by id desc
+    </select>
+
+    <select id="selectAll" resultMap="PhaseMap">
+        SELECT * FROM t_Phase order by id desc
+    </select>
+</mapper>
